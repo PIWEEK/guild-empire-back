@@ -11,7 +11,7 @@ DUMMY_ACTION = {
     'name': 'name',
     'slug': 'slug',
     'action_points': 1,
-    'stuff': 'Not implemented.'
+    'skills_needed': ['slug1', 'slug2', 'slug3']
 }
 
 
@@ -68,9 +68,11 @@ def get_members():
 # Guild
 #
 DUMMY_GUILD_INFO = {
-    'gold': randint(10, 1234567),
-    'influence': randint(10, 2345),
-    'infamy': randint(10, 12345),
+    'assets': {
+        'gold': randint(10, 1234567),
+        'influence': randint(10, 2345),
+        'infamy': randint(10, 12345),
+    },
     'members': get_members(),
 }
 
