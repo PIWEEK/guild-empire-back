@@ -1,9 +1,11 @@
-from anillo.http import NotFound, NoContent, Created, Ok
+# coding: utf-8
+
+# third party
+from anillo.http import Ok
+
+# guild empire back
+from dummy import DUMMY_GET
 
 
-def test(request):
-    return Ok({
-        "one": 1,
-        "two": 2,
-    })
-
+def get_turn(request):
+    return Ok(DUMMY_GET)
