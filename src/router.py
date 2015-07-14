@@ -8,6 +8,7 @@ import handlers
 
 
 urls = [
+    url("/api/v1/create_game", handlers.create_game, methods=["get"]),
     url("/api/v1/turn", handlers.get_turn, methods=["get"]),
     url("/api/v1/turn", handlers.post_turn, methods=["post"]),
 ]
