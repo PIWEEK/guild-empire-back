@@ -7,11 +7,11 @@ from places import place_runtime
 
 
 # == game ==
-def convert_game(game: game_runtime.Game) -> object:
+def convert_game(game: game_runtime.Game, guild: guild_runtime.Guild) -> object:
     result = {}
 
     result['places'] = _convert_places(game)
-    result['guild'] = _convert_guild(game)
+    result['guild'] = _convert_guild(guild)
 
     return result
 
@@ -49,8 +49,7 @@ def _convert_actions(place: place_runtime.Place) -> object:
 
 
 # == Guild and members ==
-def _convert_guild(game: game_runtime.Game) -> object:
-    guild = game.guilds[0]  # TODO using first assuming player logged
+def _convert_guild(guild: guild_runtime.Guild) -> object:
     result = {
         'assets': _convert_assets(guild),
         'members': _convert_members(guild)
