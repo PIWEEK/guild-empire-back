@@ -14,7 +14,7 @@ def setup_application():
     handler = chain(
         get_params_middleware,
         json_middleware,
-        default_headers_middleware({}, {"Content-Type": "application/json"}),
+        default_headers_middleware({}, {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"}),
         router
     )
     return application(handler)
