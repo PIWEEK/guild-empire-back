@@ -39,4 +39,23 @@ def get_turn(request):
 
 
 def post_turn(request):
-    return NotImplemented()
+    """
+    Expected data:
+    ```
+    [{
+        "slug": "character slug",
+        "actions": [{
+            "place": "place_slug",
+            "action": "action_slug",
+            "target": {
+                "guild": "guild_slug",
+                "character": "character_slug"
+            }
+        }]
+    }]
+    ```
+    """
+    game = request.get_params.get('game', None)
+    guild_slug = request.get_params.get('guild', None)
+
+    return Ok({"you_sent": request.body})

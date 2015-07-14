@@ -5,6 +5,7 @@ from games import game_runtime
 from guilds import guild_runtime
 from dummy import DUMMY_LAST_TURN
 
+
 # == game ==
 def convert_game(game: game_runtime.Game, guild: guild_runtime.Guild) -> object:
     result = {}
