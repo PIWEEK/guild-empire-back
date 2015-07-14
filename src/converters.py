@@ -1,53 +1,66 @@
 # coding: utf-8
 
 # core
+from actions import action_defs
 from games import game_runtime
 from guilds import guild_runtime
-from actions import action_defs
+from places import place_runtime
 
 
 # == game ==
-def serialize_game(game: game_runtime.Game) -> object:
+def convert_game(game: game_runtime.Game) -> object:
     result = {}
 
-    result['places'] = _serialize_game_places(game)
-    result['guild'] = _serialize_guild(game)
+    result['places'] = _convert_places(game)
+    result['guild'] = _convert_guild(game)
 
     return result
 
 
 # == Places and actions ==
-def _serialize_action(action: action_defs.Action) -> object:
-    result = {
-        'slug': action.slug,
-        'name': action.name,
-        'action_points': action.action_points,
-        'skills_needed': action.skills_needed,
-        'skills_upgraded': action.skills_needed,
-    }
-
-    return result
-
-
-def _serialize_game_places(game: game_runtime.Game) -> object:
+def _convert_places(game: game_runtime.Game) -> object:
     places = []
 
     for place in game.places:
         current = {
             'name': place.definition.name,
             'slug': place.definition.slug,
-            'actions': [],
+            'actions': _convert_actions(place),
         }
-        for action in place.definition.actions:
-            current['actions'].append(_serialize_action(action))
 
         places.append(current)
 
     return places
 
 
+def _convert_actions(place: place_runtime.Place) -> object:
+    actions = []
+
+    for action in place.definition.actions:
+        result = {
+            'slug': action.slug,
+            'name': action.name,
+            'action_points': action.action_points,
+            'skills_needed': action.skills_needed,
+            'skills_upgraded': action.skills_needed,
+        }
+        actions.append(action)
+
+    return result
+
+
 # == Guild and members ==
-def _serialize_assets(guild: guild_runtime.Guild) -> object:
+def _convert_guild(game: game_runtime.Game) -> object:
+    guild = game.guilds[0]  # TODO using first assuming player logged
+    result = {
+        'assets': _convert_assets(guild),
+        'members': _convert_members(guild)
+    }
+
+    return result
+
+
+def _convert_assets(guild: guild_runtime.Guild) -> object:
     assets = []
     for asset in guild.assets:
         assets.append({
@@ -58,7 +71,7 @@ def _serialize_assets(guild: guild_runtime.Guild) -> object:
     return assets
 
 
-def _serialize_members(guild: guild_runtime.Guild) -> object:
+def _convert_members(guild: guild_runtime.Guild) -> object:
     members = []
     for member in guild.members:
         current = {
@@ -87,13 +100,3 @@ def _serialize_members(guild: guild_runtime.Guild) -> object:
 
         members.append(current)
     return members
-
-
-def _serialize_guild(game: game_runtime.Game) -> object:
-    guild = game.guilds[0]  # TODO using first assuming player logged
-    result = {
-        'assets': _serialize_assets(guild),
-        'members': _serialize_members(guild)
-    }
-
-    return result

@@ -8,7 +8,7 @@ from storage.methods import load_game
 
 # guild empire back
 from dummy import DUMMY_GET
-from serializers import serialize_game
+from converters import convert_game
 
 
 def get_turn(request):
@@ -19,9 +19,9 @@ def get_turn(request):
 
     game_object = load_game(game)
 
-    serialized_game = serialize_game(game_object)
+    converted_game = convert_game(game_object)
 
-    return Ok(serialized_game)
+    return Ok(converted_game)
 
 
 def post_turn(request):
