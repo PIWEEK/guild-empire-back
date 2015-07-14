@@ -43,9 +43,9 @@ def _convert_actions(place: place_runtime.Place) -> object:
             'skills_needed': action.skills_needed,
             'skills_upgraded': action.skills_needed,
         }
-        actions.append(action)
+        actions.append(result)
 
-    return result
+    return actions
 
 
 # == Guild and members ==
