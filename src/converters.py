@@ -3,8 +3,7 @@
 # core
 from games import game_runtime
 from guilds import guild_runtime
-from places import place_runtime
-
+from dummy import DUMMY_LAST_TURN
 
 # == game ==
 def convert_game(game: game_runtime.Game, guild: guild_runtime.Guild) -> object:
@@ -12,6 +11,8 @@ def convert_game(game: game_runtime.Game, guild: guild_runtime.Guild) -> object:
 
     result['places'] = _convert_places(game)
     result['guild'] = _convert_guild(guild)
+    result['free_actions'] = _convert_actions(game.definition.free_actions)
+    result['last_turn'] = DUMMY_LAST_TURN
 
     return result
 
@@ -24,7 +25,7 @@ def _convert_places(game: game_runtime.Game) -> object:
         current = {
             'name': place.definition.name,
             'slug': place.definition.slug,
-            'actions': _convert_actions(place),
+            'actions': _convert_actions(place.definition.actions),
         }
 
         places.append(current)
@@ -32,20 +33,20 @@ def _convert_places(game: game_runtime.Game) -> object:
     return places
 
 
-def _convert_actions(place: place_runtime.Place) -> object:
-    actions = []
+def _convert_actions(actions) -> object:
+    results = []
 
-    for action in place.definition.actions:
-        result = {
+    for action in actions:
+        current = {
             'slug': action.slug,
             'name': action.name,
             'action_points': action.action_points,
             'skills_needed': action.skills_needed,
             'skills_upgraded': action.skills_needed,
         }
-        actions.append(result)
+        results.append(current)
 
-    return actions
+    return results
 
 
 # == Guild and members ==
