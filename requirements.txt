@@ -1,1 +1,2 @@
 -e git://github.com/jespino/anillo.git#egg=anillo
+-e git://github.com/kaleidos/skame.git#egg=skame
