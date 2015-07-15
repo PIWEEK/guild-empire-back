@@ -84,13 +84,10 @@ def post_turn(request):
     # Convert turn to runtime objects
     turn = turn_to_runtime(request.body, game, guild)
 
-    # import ipdb; ipdb.set_trace()
-
     # Submit turn to core
-    # updated_game = submit_turn(game, turn)
+    updated_game = submit_turn(game, turn)
 
-    # Convert data
-    # converted_updated_game = convert_game(updated_game)
+    # Convert new game data
+    converted_updated_game = convert_game(updated_game, guild)
 
-    # return Created(converted_updated_game)
-    return Ok(request.body)
+    return Created(converted_updated_game)

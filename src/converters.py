@@ -90,7 +90,7 @@ def turn_to_runtime(turns: list, game: game_runtime.Game, guild: guild_runtime.G
     characters = [_convert_turn_characters(character) for character in turns]
 
     return game_runtime.Turn(
-        guild=guild.slug,
+        guild=guild,
         characters=characters,
     )
 
