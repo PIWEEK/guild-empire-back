@@ -3,6 +3,9 @@
 # core
 from games import game_runtime
 from guilds import guild_runtime
+from guilds import guild_services
+
+# back
 from dummy import DUMMY_LAST_TURN
 
 
@@ -100,3 +103,30 @@ def _convert_members(guild: guild_runtime.Guild) -> object:
 
         members.append(current)
     return members
+
+
+# == Turn ==
+def turn_to_runtime(turns: list, game: game_runtime.Game, guild: guild_runtime.Guild) -> game_runtime.Turn:
+    characters = [_convert_turn_characters(character) for character in turns]
+
+    return game_runtime.Turn(
+        guild=guild.slug,
+        characters=characters,
+    )
+
+
+def _convert_turn_characters(character_dict: dict) -> game_runtime.TurnCharacter:
+    actions = [_convert_turn_character_action(action) for action in character_dict['actions']]
+
+    return game_runtime.TurnCharacter(
+        character=character_dict['slug'],
+        actions=actions,
+    )
+
+
+def _convert_turn_character_action(action: list) -> game_runtime.TurnCharacterAction:
+    return game_runtime.TurnCharacterAction(
+        place=action['place'],
+        action=action['action'],
+        target=None
+    )
