@@ -18,7 +18,12 @@ def convert_game(game: game_runtime.Game, guild: guild_runtime.Guild) -> object:
     result['free_actions'] = _convert_actions(game.definition.free_actions)
     result['last_turn'] = DUMMY_LAST_TURN
 
-    return result
+    return {
+        'places': _convert_places(game),
+        'guild': _convert_guild(guild),
+        'free_actions': _convert_actions(game.definition.free_actions),
+        'last_turn': DUMMY_LAST_TURN,
+    }
 
 
 # == Places and actions ==
@@ -55,12 +60,13 @@ def _convert_actions(actions) -> object:
 
 # == Guild and members ==
 def _convert_guild(guild: guild_runtime.Guild) -> object:
-    result = {
+    return {
+        'name': guild.name,
+        'slug': guild.slug,
+        'color': guild.slug,
         'assets': _convert_assets(guild),
         'members': _convert_members(guild)
     }
-
-    return result
 
 
 def _convert_assets(guild: guild_runtime.Guild) -> object:
@@ -81,6 +87,7 @@ def _convert_members(guild: guild_runtime.Guild) -> object:
             'name': member.name,
             'slug': member.slug,
             'archetype': member.archetype,
+            'archetype_slug': member.archetype_slug,
             'skills': [],
             'conditions': [],
         }
