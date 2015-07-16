@@ -17,8 +17,7 @@ def setup_application():
         default_headers_middleware({}, {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "*",
-            "Access-Control-Allow-Headers": "*",
+            "Access-Control-Allow-Headers": "Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version".lower(),
         }),
         router
     )

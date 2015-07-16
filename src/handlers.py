@@ -1,5 +1,8 @@
 # coding: utf-8
 
+# python
+import json
+
 # third party
 from anillo.http import Ok, BadRequest, Created
 from skame.exceptions import SchemaError, SchemaErrors
@@ -59,6 +62,12 @@ def post_turn(request):
     ]
     ```
     """
+
+    # Dummy fix for the CORS problem.
+    # Front don't send the Content-Type header and we make the decoding
+    # manually on the handler.
+    if isinstance(request.body, bytes):
+        request.body = json.loads(request.body.decode('utf-8'))
 
     game_uuid = request.get_params.get('game', None)
     guild_slug = request.get_params.get('guild', None)
