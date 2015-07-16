@@ -47,7 +47,7 @@ def _convert_guild(guild: guild_runtime.Guild) -> object:
     return {
         'name': guild.name,
         'slug': guild.slug,
-        'color': guild.slug,
+        'color': guild.color,
         'assets': _convert_assets(guild),
         'members': _convert_members(guild)
     }
