@@ -1,21 +1,44 @@
 # coding: utf-8
 
+# python
+from random import randint
+
 # core
 from games import game_runtime
 from guilds import guild_runtime
 
-# back
-from dummy import DUMMY_LAST_TURN
-
 
 # == game ==
 def convert_game(game: game_runtime.Game, guild: guild_runtime.Guild) -> object:
+
+    LAST_TURN = [{
+        'character': character.slug,
+        'guild_assets': {
+            asset.slug: randint(-100, 100) for slug, asset in guild.assets.items()
+        },
+        'skills': [
+            {
+                'slug': skill.slug,
+                'variation': randint(-5, 5)
+            } for slug, skill in character.skills.items()
+        ],
+        'events': [
+            {
+                'message': 'Lorem ipsum dolor sit amet',
+                'condition': None if randint(0, 1) else {
+                    'slug': 'broken-bone',
+                    'type': 'gained' if randint(0, 1) else 'lost'
+                }
+            } for x in range(0, randint(0, 4))
+        ]
+    } for slug, character in guild.members.items()]
+
     return {
         'pending': guild.slug in game.turns,
         'places': _convert_places(game),
         'guild': _convert_guild(guild),
         'free_actions': _convert_actions(game.definition.free_actions),
-        'last_turn': DUMMY_LAST_TURN,
+        'last_turn': LAST_TURN,
     }
 
 
