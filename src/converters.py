@@ -12,39 +12,40 @@ from actions import action_services
 # == game ==
 def convert_game(game: game_runtime.Game, guild: guild_runtime.Guild) -> object:
 
-    LAST_TURN = [{
-        'character': {
-            'slug': character.slug,
-            'avatar_slug': character.avatar_slug,
-            'name': character.name,
-            'archetype': character.archetype,
-        },
-        'guild_assets': {
-            asset.slug: randint(-100, 100) for slug, asset in guild.assets.items()
-        },
-        'skills': [
-            {
-                'slug': skill.slug,
-                'variation': randint(-5, 5)
-            } for slug, skill in character.skills.items()
-        ],
-        'events': [
-            {
-                'message': 'Lorem ipsum dolor sit amet',
-                'condition': None if randint(0, 1) else {
-                    'slug': 'broken-bone',
-                    'type': 'gained' if randint(0, 1) else 'lost'
-                }
-            } for x in range(0, randint(0, 4))
-        ]
-    } for slug, character in guild.members.items()]
+    # LAST_TURN = [{
+        # 'character': {
+        #     'slug': character.slug,
+        #     'avatar_slug': character.avatar_slug,
+        #     'name': character.name,
+        #     'archetype': character.archetype,
+        # },
+        # 'guild_assets': {
+        #     asset.slug: randint(-100, 100) for slug, asset in guild.assets.items()
+        # },
+        # 'skills': [
+        #     {
+        #         'slug': skill.slug,
+        #         'variation': randint(-5, 5)
+        #     } for slug, skill in character.skills.items()
+        # ],
+        # 'events': [
+        #     {
+        #         'message': 'Lorem ipsum dolor sit amet',
+        #         'condition': None if randint(0, 1) else {
+        #             'slug': 'broken-bone',
+        #             'type': 'gained' if randint(0, 1) else 'lost'
+        #         }
+        #     } for x in range(0, randint(0, 4))
+        # ]
+    # } for slug, character in guild.members.items()]
+    import ipdb; ipdb.set_trace()
 
     return {
         'pending': guild.slug in game.turns,
         'places': _convert_places(game),
         'guild': _convert_guild(guild),
         'free_actions': _convert_actions(game.definition.free_actions),
-        'last_turn': LAST_TURN,
+        'last_turn': _convert_last_turn(game, guild),
     }
 
 
@@ -113,6 +114,30 @@ def _convert_members(guild: guild_runtime.Guild) -> object:
     } for slug, member in guild.members.items()]
 
     return members
+
+
+# == Last Turn ==
+def _convert_last_turn(game: game_runtime.Game,
+                       guild: guild_runtime.Guild) -> object:
+    return [
+    {
+        'character': {
+            'slug': character.slug,
+            'avatar_slug': character.avatar_slug,
+            'name': character.name,
+            'archetype': character.archetype,
+        },
+        'guild_assets': {
+            slug: value for slug, value in character.last_turn.guild_assets.items()
+        },
+        'events': [
+            {
+                'message': event.message,
+                'condition_gained': event.condition_gained_slug,
+                'condition_lost': event.condition_lost_slug,
+            } for event in character.last_turn.events
+        ]
+    } for slug, character in guild.members.items() if character.last_turn] or None
 
 
 # == Turn ==
