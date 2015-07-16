@@ -7,6 +7,7 @@ pip install -r requirements.txt
 ## Run
 
 ```shell
+source install_core.sh
 python src/run.py
 ```
 
