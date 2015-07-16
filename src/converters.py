@@ -88,7 +88,7 @@ def _convert_members(guild: guild_runtime.Guild) -> object:
 
 # == Turn ==
 def turn_to_runtime(turns: list, game: game_runtime.Game, guild: guild_runtime.Guild) -> game_runtime.Turn:
-    characters = [_convert_turn_characters(character) for character in turns]
+    characters = {character['slug']: _convert_turn_characters(character) for character in turns}
 
     return game_runtime.Turn(
         guild=guild,
