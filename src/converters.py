@@ -91,7 +91,7 @@ def turn_to_runtime(turns: list, game: game_runtime.Game, guild: guild_runtime.G
     characters = {character['slug']: _convert_turn_characters(character) for character in turns}
 
     return game_runtime.Turn(
-        guild=guild,
+        guild_slug=guild.slug,
         characters=characters,
     )
 
@@ -100,14 +100,14 @@ def _convert_turn_characters(character_dict: dict) -> game_runtime.TurnCharacter
     actions = [_convert_turn_character_action(action) for action in character_dict['actions']]
 
     return game_runtime.TurnCharacter(
-        character=character_dict['slug'],
+        character_slug=character_dict['slug'],
         actions=actions,
     )
 
 
 def _convert_turn_character_action(action: list) -> game_runtime.TurnCharacterAction:
     return game_runtime.TurnCharacterAction(
-        place=action['place'],
-        action=action['action'],
+        place_slug=action['place'],
+        action_slug=action['action'],
         target=None
     )
