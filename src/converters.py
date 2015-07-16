@@ -12,7 +12,12 @@ from guilds import guild_runtime
 def convert_game(game: game_runtime.Game, guild: guild_runtime.Guild) -> object:
 
     LAST_TURN = [{
-        'character': character.slug,
+        'character': {
+            'slug': character.slug,
+            'avatar_slug': character.avatar_slug,
+            'name': character.name,
+            'archetype': character.archetype,
+        },
         'guild_assets': {
             asset.slug: randint(-100, 100) for slug, asset in guild.assets.items()
         },
