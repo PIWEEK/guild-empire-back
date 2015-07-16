@@ -6,6 +6,7 @@ from random import randint
 # core
 from games import game_runtime
 from guilds import guild_runtime
+from actions import action_services
 
 
 # == game ==
@@ -64,7 +65,7 @@ def _convert_actions(actions) -> object:
         'name': action.name,
         'action_points': action.action_points,
         'skills_needed': action.skills_needed,
-        'skills_upgraded': action.skills_needed,
+        'skills_upgraded': action_services._get_upgraded_skills_from_action(action),
     } for action in actions]
 
     return results
