@@ -38,7 +38,6 @@ def convert_game(game: game_runtime.Game, guild: guild_runtime.Guild) -> object:
         #     } for x in range(0, randint(0, 4))
         # ]
     # } for slug, character in guild.members.items()]
-    import ipdb; ipdb.set_trace()
 
     return {
         'pending': guild.slug in game.turns,
