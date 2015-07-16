@@ -11,7 +11,7 @@ from dummy import DUMMY_LAST_TURN
 # == game ==
 def convert_game(game: game_runtime.Game, guild: guild_runtime.Guild) -> object:
     return {
-        'pending': False,
+        'pending': guild.slug in game.turns,
         'places': _convert_places(game),
         'guild': _convert_guild(guild),
         'free_actions': _convert_actions(game.definition.free_actions),
