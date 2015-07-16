@@ -5,7 +5,7 @@ from anillo.http import Ok, BadRequest, Created
 from skame.exceptions import SchemaError, SchemaErrors
 
 # core
-from games.game_services import get_guild_from_game, new_game, submit_turn
+from games.game_services import new_game, submit_turn
 from storage.methods import load_game, save_game
 
 # guild empire back
@@ -20,7 +20,7 @@ def create_game(request):
     save_game(game)
     return Ok({
         'game': game.uuid,
-        'guilds': [g.slug for g in game.guilds],
+        'guilds': [key for key in game.guilds.keys()],
     })
 
 
@@ -34,7 +34,7 @@ def get_turn(request):
 
     game_object = load_game(game)
 
-    guild = get_guild_from_game(game_object, guild_slug)
+    guild = game_object.guilds[guild_slug]
     converted_game = convert_game(game_object, guild)
 
     return Ok(converted_game)
@@ -79,7 +79,7 @@ def post_turn(request):
 
     # Load game and guild runtime
     game = load_game(game_uuid)
-    guild = get_guild_from_game(game, guild_slug)
+    guild = game.guilds[guild_slug]
 
     # Convert turn to runtime objects
     turn = turn_to_runtime(request.body, game, guild)

@@ -11,6 +11,7 @@ from dummy import DUMMY_LAST_TURN
 # == game ==
 def convert_game(game: game_runtime.Game, guild: guild_runtime.Guild) -> object:
     return {
+        'pending': False,
         'places': _convert_places(game),
         'guild': _convert_guild(guild),
         'free_actions': _convert_actions(game.definition.free_actions),
@@ -24,7 +25,7 @@ def _convert_places(game: game_runtime.Game) -> object:
         'name': place.definition.name,
         'slug': place.definition.slug,
         'actions': _convert_actions(place.definition.actions),
-    } for place in game.places]
+    } for slug, place in game.places.items()]
 
     return places
 
@@ -57,7 +58,7 @@ def _convert_assets(guild: guild_runtime.Guild) -> object:
         'name': asset.name,
         'slug': asset.slug,
         'value': asset.value,
-    } for asset in guild.assets]
+    } for slug, asset in guild.assets.items()]
 
     return assets
 
@@ -73,14 +74,14 @@ def _convert_members(guild: guild_runtime.Guild) -> object:
             'slug': skill.slug,
             'value': skill.value,
             'modifier': skill.modifier,
-        } for skill in member.skills],
+        } for skill_slug, skill in member.skills.items()],
         'conditions': [{
             'name': condition.name,
             'slug': condition.slug,
             'type': condition.type,
             'description': condition.description,
-        } for condition in member.conditions],
-    } for member in guild.members]
+        } for skill_condition, condition in member.conditions.items()],
+    } for slug, member in guild.members.items()]
 
     return members
 
