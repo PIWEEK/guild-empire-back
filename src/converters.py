@@ -68,7 +68,7 @@ def _convert_members(guild: guild_runtime.Guild) -> object:
         'name': member.name,
         'slug': member.slug,
         'archetype': member.archetype,
-        'archetype_slug': member.archetype_slug,
+        'avatar_slug': member.avatar_slug,
         'skills': [{
             'name': skill.name,
             'slug': skill.slug,
