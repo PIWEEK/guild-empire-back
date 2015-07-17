@@ -95,6 +95,7 @@ def post_turn(request):
 
     # Submit turn to core
     updated_game = submit_turn(game, turn)
+    save_game(updated_game)
 
     # Convert new game data
     converted_updated_game = convert_game(updated_game, guild)
