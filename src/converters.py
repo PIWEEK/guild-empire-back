@@ -65,7 +65,7 @@ def _convert_actions(actions) -> object:
         'name': action.name,
         'action_points': action.action_points,
         'skills_needed': action.skills_needed,
-        'skills_upgraded': action_services._get_upgraded_skills_from_action(action),
+        'skills_upgraded': action.upgraded_skills(),
     } for action in actions]
 
     return results

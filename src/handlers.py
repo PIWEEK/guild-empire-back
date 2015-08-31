@@ -28,17 +28,17 @@ def create_game(request):
 
 
 def get_turn(request):
-    game = request.get_params.get('game', None)
+    game_uuid = request.get_params.get('game', None)
     guild_slug = request.get_params.get('guild', None)
 
     # Dummy data for development
-    if not game:
+    if not game_uuid:
         return Ok(DUMMY_GET)
 
-    game_object = load_game(game)
+    game = load_game(game_uuid)
 
-    guild = game_object.guilds[guild_slug]
-    converted_game = convert_game(game_object, guild)
+    guild = game.guilds[guild_slug]
+    converted_game = convert_game(game, guild)
 
     return Ok(converted_game)
 
@@ -94,10 +94,10 @@ def post_turn(request):
     turn = turn_to_runtime(request.body, game, guild)
 
     # Submit turn to core
-    updated_game = submit_turn(game, turn)
-    save_game(updated_game)
+    submit_turn(game, turn)
+    save_game(game)
 
     # Convert new game data
-    converted_updated_game = convert_game(updated_game, guild)
+    converted_game = convert_game(game, guild)
 
-    return Created(converted_updated_game)
+    return Created(converted_game)
